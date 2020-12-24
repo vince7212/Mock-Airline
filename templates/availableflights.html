@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              font-family: Arial, Helvetica, sans-serif;
+              border-collapse: collapse;
+            }
+            
+            table {
+              width: 95%;
+              margin-left: auto;
+                margin-right: auto;
+                text-align:center;
+            }
+
+            h1 {
+                text-align:center;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            #submit {
+                margin: 0 auto;
+                text-align:center;
+            }
+            h1, h2 {
+            text-align:center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #title {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 25px;
+            text-align:center;
+        }
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          border: 1px solid #e7e7e7;
+          background-color: #f3f3f3;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: #666;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #ddd;
+        }
+
+        li a.active {
+          color: white;
+          background-color: #0f3c59;
+        }
+            </style>
+             <meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+           
+             <!-- Bootstrap CSS -->
+             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+               integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+               <title>Available Flights</title>
+            
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a class="active" href="/">Home</a></li>
+                <li><a href="flights">Flights</a></li>
+                <li><a href="bookings">Bookings</a></li>
+                <li><a href="tickets">Tickets</a></li>
+                <li><a href="boarding_passes">Boarding Passes</a></li>
+                <li><a href="seats">Seats</a></li>
+            </ul>
+        </nav>
+
+        <h1>Available Flights</h1>
+        <form action="#" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>Flight ID</th>
+                <th>Scheduled Departure</th>
+                <th>Scheduled Arrival</th>
+                <th>Departure Airport</th>
+                <th>Departure City</th>
+                <th>Arrival Airport</th>
+                <th>Arrival City</th>
+                <th>Seats Available</th>
+                <th>Seats Booked</th>
+                <th>Number of Passengers</th>
+                <th>Fare Conditions</th>
+                <th>Book</th>
+            </tr>
+            </thead>
+            <tbody>
+                <!-- <ol id = "demo"></ol> -->
+                {% for row in data %}
+                    <tr> 
+                        <td>{{row[0]}}</td>
+                        <td>{{row[1]}}</td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td>
+                        <td>{{row[5]}}</td>
+                        <td>{{row[6]}}</td>
+                        <td>{{row[7]}}</td>
+                        <td>{{row[8]}}</td>
+                        <td>
+                            <select class="numpass" name="numpassenger">
+                                <option value="0" >0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                              </select>
+                        </td>
+
+                        <td>
+                            <select class="fare_conditions" name="fare_conditions">
+                                <option value="200" data-value = "Economy">Economy: $200</option>
+                                <option value="300" data-value = "Business">Business: $300</option>
+                                <option value="500" data-value = "First Class">First Class: $500</option>
+                              </select>
+                        </td>
+                        <td><input type="radio" name = "option" class = "checkbox" onclick = "dispTblContents(this)"></td>
+                    </tr>
+                {% endfor %} 
+                
+            </tbody>
+        </table>
+        <br>
+        <!-- <form method="post"  id ="submit"> -->
+        <div id = "submit">
+            <input type="submit"  id = "submit_box" value="Submit">
+        </div>
+        <!-- </form> -->
+        <p input type="text" id="demo"></p>
+    </form>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script text="text/javascript">
+        var trs = document.getElementsByTagName("tr");
+        var i = 0;
+        while (i<trs.length){
+            trs[i].id = "row"+ i;
+            i++;
+        }
+
+        i = 0;
+        var checkboxes = document.getElementsByClassName("checkbox");
+        var numpass = document.getElementsByClassName("numpass");
+        var fare_conditions = document.getElementsByClassName("fare_conditions");
+        while (i<checkboxes.length) {
+            checkboxes[i].id = i;
+            numpass[i].id = "np" + i;
+            fare_conditions[i].id = "fc" + i;
+            i++
+        }
+        
+        var flight_id, passnum, fare_cond;
+        function dispTblContents(elem) {
+            var num = parseInt(elem.id) + 1;
+            var rowid = "row" + num;
+            var npid = "np" + elem.id;
+            var fcid = "fc" + elem.id;
+            
+            flight_id = document.getElementById(rowid).cells[0].innerHTML;
+            var e = document.getElementById(npid);
+            passnum = e.options[e.selectedIndex].text;
+            var d = document.getElementById(fcid);
+            cost = d.options[d.selectedIndex].value;
+            total = parseInt(cost) * parseInt(passnum)
+            fare_cond = d.options[d.selectedIndex].getAttribute('data-value');
+            // alert(fare_cond)
+            alert("Total Cost: $" + parseInt(cost) * parseInt(passnum));
+            //document.getElementById("demo").innerHTML = flight_no + " " + passnum;
+        }
+
+        /* ajax call for running python script found in server.py */
+        $("#submit_box").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/list",
+                data:JSON.stringify({ 
+                    flight_id:flight_id,
+                    passnum:passnum,
+                    cost:cost,
+                    fare_cond:fare_cond,
+                    total:total
+                }),
+                contentType: 'application/json;charset=UTF-8',
+                success: function(result) {
+                    //alert('ok');
+                    console.log(flight_id)
+                    location.href = "http://127.0.0.1:5000/ticket"
+                },
+                error: function(result) {
+                    alert('error');
+                    console.log(flight_id)
+                }
+            });
+        });  
+
+    </script>
+        
+    </body>
+    
+</html>
+
+

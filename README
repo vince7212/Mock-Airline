@@ -1,0 +1,12 @@
+Requirements:
+* text editor, visual studio code is suggested
+* need to connect UH database
+* bootstrap is used in building the interface
+
+STEPS:
+* Reset tables by running make_airline_sql.sql file in UH database
+* Run command: "pip install -r reqs.txt" inside server folder using terminal to install dependencies
+* Run command: "python server.py" to start server
+* Click on the link in the terminal to redirect to home page
+
+Demo link: https://drive.google.com/file/d/10RU6XGH8lwsK9cxmJrJkH6l79qtI9rJj/view?usp=sharing
